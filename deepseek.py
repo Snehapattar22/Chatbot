@@ -1,0 +1,28 @@
+"""Run this model in Python
+
+> pip install azure-ai-inference
+"""
+import os
+from azure.ai.inference import ChatCompletionsClient
+from azure.ai.inference.models import SystemMessage
+from azure.ai.inference.models import UserMessage
+from azure.core.credentials import AzureKeyCredential
+
+# To authenticate with the model you will need to generate a personal access token (PAT) in your GitHub settings. 
+# Create your PAT token by following instructions here: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens
+client = ChatCompletionsClient(
+    endpoint="https://models.inference.ai.azure.com",
+    credential=AzureKeyCredential("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"),
+)
+
+response = client.complete(
+    messages=[
+        SystemMessage("""You are a computer science student"""),
+        UserMessage("Can you explain the basics of machine learning?"),
+    ],
+    model="DeepSeek-V3",
+    temperature=0.8,
+    max_tokens=2048,
+)
+
+print(response.choices[0].message.content)
